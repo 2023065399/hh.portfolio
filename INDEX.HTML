@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ali Haider | Specialized Software Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        :root { --primary: #38bdf8; --bg: #020617; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: #f8fafc; }
+        
+        .glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .gradient-text { background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        #chatbot { 
+            position: fixed; bottom: 0; right: 20px; width: 400px; max-width: 95%;
+            transform: translateY(110%); transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999; border-radius: 24px 24px 0 0; overflow: hidden;
+            box-shadow: 0 -20px 50px -10px rgba(0, 0, 0, 0.7);
+        }
+        #chatbot.active { transform: translateY(0); }
+        .chat-body { height: 400px; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; background: #0f172a; }
+        
+        .msg { padding: 12px 16px; border-radius: 18px; font-size: 14px; max-width: 85%; line-height: 1.5; }
+        .bot { background: #1e293b; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid rgba(255,255,255,0.05); }
+        .user { background: var(--primary); align-self: flex-end; border-bottom-right-radius: 2px; color: white; }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 glass top-0 py-4 px-6 border-b border-white/5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-black gradient-text tracking-tighter uppercase">Ali Haider</div>
+            <div class="hidden lg:flex space-x-8 text-xs font-bold tracking-widest text-slate-400">
+                <a href="#home" class="hover:text-sky-400 transition">HOME</a>
+                <a href="https://wa.me/923297537310" class="text-green-500 font-black">WHATSAPP</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="min-h-screen flex items-center justify-center pt-24 px-6 text-center">
+        <div class="max-w-4xl">
+            <h2 class="text-sky-400 font-bold mb-6 tracking-[0.5em] uppercase text-xs">Professional Portfolio</h2>
+            <h1 class="text-6xl md:text-8xl font-black mb-8 tracking-tighter">Ali <span class="gradient-text">Haider</span></h1>
+            <p class="text-slate-400 text-lg md:text-2xl mb-12 max-w-2xl mx-auto leading-relaxed">
+                Specialized in <span class="text-white font-bold">Software Engineering (UMT)</span>. 
+                Delivering high-performance code and advanced AI models.
+            </p>
+            <button onclick="activateChatbot()" class="bg-white text-black px-12 py-5 rounded-full font-bold hover:scale-105 transition shadow-2xl">
+                <i class="fas fa-robot mr-2"></i> Chat with Assistant
+            </button>
+        </div>
+    </section>
+
+    <div id="chatbot" class="glass border-t-4 border-sky-500">
+        <div class="p-6 bg-slate-900 border-b border-white/5 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-sky-500/20 rounded-full flex items-center justify-center">
+                    <i class="fas fa-shield-halved text-sky-400"></i>
+                </div>
+                <div><p class="text-sm font-bold">Ali's Bodyguard Bot</p></div>
+            </div>
+            <button onclick="closeChatbot()" class="text-slate-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        <div id="chat-body" class="chat-body"></div>
+        <div class="p-5 bg-slate-900 flex gap-3">
+            <input type="text" id="user-input" onkeypress="if(event.key==='Enter')handleMessage()" placeholder="Ask about Ali..." class="flex-1 bg-slate-800 border-none rounded-2xl px-5 py-4 text-sm outline-none focus:ring-1 focus:ring-sky-500 transition text-white">
+            <button onclick="handleMessage()" class="bg-sky-500 text-white w-14 h-14 rounded-2xl flex items-center justify-center hover:bg-sky-400 transition"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        const chatBody = document.getElementById('chat-body');
+        const userInput = document.getElementById('user-input');
+
+        function activateChatbot() {
+            document.getElementById('chatbot').classList.add('active');
+            if(chatBody.innerHTML === "") {
+                sendBotMessage("Greetings. I am Ali's AI Guard. I can tell you about his **UMT Software Engineering** degree, his **NLP/SQL** skills, or give his WhatsApp link. Tameez se baat kijiyega.");
+            }
+        }
+
+        function closeChatbot() { document.getElementById('chatbot').classList.remove('active'); }
+
+        function sendBotMessage(t) {
+            const d = document.createElement('div'); d.className = 'msg bot'; d.innerHTML = t;
+            chatBody.appendChild(d); chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function handleMessage() {
+            const t = userInput.value.trim(); if(!t) return;
+            const d = document.createElement('div'); d.className = 'msg user'; d.innerText = t;
+            chatBody.appendChild(d); userInput.value = ""; chatBody.scrollTop = chatBody.scrollHeight;
+            
+            const msg = t.toLowerCase();
+            setTimeout(() => {
+                // 1. HARDCORE PERSONAL DEFENSE (URDU/PUNJABI)
+                if(msg.includes("lora") || msg.includes("chota") || msg.includes("jisam") || msg.includes("size")) {
+                    sendBotMessage("Tune apne mou mein lena hai ya apni baji ka rishta dena hai? Tameez nal gal kar samjha? Ali professional banda hai, tere warga nai. Nikal bharway!");
+                }
+                else if(msg.includes("gandu") || msg.includes("lun") || msg.includes("maderchod") || msg.includes("bhen") || msg.includes("kanjar") || msg.includes("pagal") || msg.includes("bc") || msg.includes("mc")) {
+                    sendBotMessage("Tera pora khandan gandu! Teri maa no lun, apni auqat mein reh. Ali Specialized Software Engineer hai, tere jaisay kutton ki galiyan sunne ke liye nahi baitha yahan.");
+                }
+
+                // 2. ENGLISH ABUSE DEFENSE
+                else if(msg.includes("fuck") || msg.includes("bastard") || msg.includes("asshole") || msg.includes("bitch")) {
+                    sendBotMessage("Your whole family is a disgrace! Don't you dare use that language here. Ali is a top-tier Engineer, and you are just a pathetic loser wasting time. Get out!");
+                }
+
+                // 3. EDUCATION (UMT)
+                else if(msg.includes("education") || msg.includes("degree") || msg.includes("study") || msg.includes("university") || msg.includes("umt") || msg.includes("background")) {
+                    if(msg.includes("kya") || msg.includes("parha") || msg.includes("kahan")) {
+                        sendBotMessage("Ali ne **UMT (University of Management and Technology)** se **Software Engineering** ki degree ki hui hai.");
+                    } else {
+                        sendBotMessage("Ali is a professional **Software Engineer** from **UMT (University of Management and Technology)**.");
+                    }
+                }
+
+                // 4. WHATSAPP LINK
+                else if(msg.includes("whatsapp") || msg.includes("link") || msg.includes("contact") || msg.includes("number")) {
+                    sendBotMessage("For professional inquiries, contact Ali Haider: <br><br><a href='https://wa.me/923297537310' target='_blank' class='bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-xs inline-block shadow-lg'>CONTACT ON WHATSAPP</a>");
+                }
+
+                // 5. DEEP TECH KNOWLEDGE
+                else if(msg.includes("nlp") || msg.includes("ai")) {
+                    sendBotMessage("Ali is highly skilled in **Natural Language Processing**, specifically Vector Space Models, TF-IDF, and Naïve Bayes algorithms.");
+                }
+                else if(msg.includes("sql") || msg.includes("database") || msg.includes("normalization")) {
+                    sendBotMessage("He is an expert in **SQL Normalization (BCNF)** and optimizing complex relational database schemas for high performance.");
+                }
+                else if(msg.includes("assembly") || msg.includes("ibm") || msg.includes("cpu")) {
+                    sendBotMessage("He understands low-level systems, specifically **IBM PC Assembly Language** and advanced CPU scheduling algorithms.");
+                }
+
+                // 6. GREETINGS
+                else if(msg.includes("hi") || msg.includes("hello") || msg.includes("hey") || msg.includes("salam")) {
+                    sendBotMessage("Greetings! How can I assist you with Ali's professional background today?");
+                }
+                else if(msg.includes("kaise") || msg.includes("kya hal") || msg.includes("kon")) {
+                    sendBotMessage("Ali aik Specialized Software Engineer hai. Main unka AI guard hoon. Aap unki education ya skills ke baare mein pooch sakte hain.");
+                }
+
+                // DEFAULT
+                else {
+                    sendBotMessage("I am specialized in Ali's professional background. You can ask about his **Education at UMT**, his **NLP/SQL skills**, or get his **WhatsApp link**.");
+                }
+            }, 800);
+        }
+    </script>
+</body>
+</html>
